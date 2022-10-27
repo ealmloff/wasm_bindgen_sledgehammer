@@ -26,64 +26,20 @@ fn main() {
         *i = 1;
         unsafe { (**r).run() };
     });
-    console::log_1(&format!("sledgehammer append 1000: {}", sledgehammer_append_1000).into());
     unsafe { (*msg_ref).clear() };
-
-    let wasm_bindgen_append_1000 = bench_env((bindgen_ref, s), |(r, i)| {
-        *i = 1;
-        unsafe { (**r).run() };
-    });
-    console::log_1(&format!("wasm-bindgen append 1000: {}", wasm_bindgen_append_1000).into());
-    unsafe { (*bindgen_ref).clear() };
-
-    compare_benches(wasm_bindgen_append_1000, sledgehammer_append_1000);
 
     let sledgehammer_append_10000 = bench_env((msg_ref, s), |(r, i)| {
         *i = 1;
         unsafe { (**r).run_lots() };
     });
-    console::log_1(&format!("sledgehammer append 10000: {}", sledgehammer_append_10000).into());
     unsafe { (*msg_ref).clear() };
-
-    let wasm_bindgen_append_10000 = bench_env((bindgen_ref, s), |(r, i)| {
-        *i = 1;
-        unsafe { (**r).run_lots() };
-    });
-
-    console::log_1(&format!("wasm-bindgen append 10000: {}", wasm_bindgen_append_10000).into());
-    unsafe { (*bindgen_ref).clear() };
-
-    compare_benches(wasm_bindgen_append_10000, sledgehammer_append_10000);
 
     let sledgehammer_run_lots_add = bench_env((msg_ref, s), |(r, i)| {
         *i = 1;
         unsafe { (**r).run_lots() };
         unsafe { (**r).add() };
     });
-    console::log_1(
-        &format!(
-            "sledgehammer run lots and add: {}",
-            sledgehammer_run_lots_add
-        )
-        .into(),
-    );
     unsafe { (*msg_ref).clear() };
-
-    let wasm_bindgen_run_lots_add = bench_env((bindgen_ref, s), |(r, i)| {
-        *i = 1;
-        unsafe { (**r).run_lots() };
-        unsafe { (**r).add() };
-    });
-    console::log_1(
-        &format!(
-            "wasm-bindgen run lots and add: {}",
-            wasm_bindgen_run_lots_add
-        )
-        .into(),
-    );
-    unsafe { (*bindgen_ref).clear() };
-
-    compare_benches(wasm_bindgen_run_lots_add, sledgehammer_run_lots_add);
 
     unsafe { (*msg_ref).run() };
     let sledgehammer_swap = bench_env((msg_ref, s), |(r, i)| {
@@ -92,38 +48,14 @@ fn main() {
             unsafe { (**r).swap_rows() };
         }
     });
-    console::log_1(&format!("sledgehammer swap 1000: {}", sledgehammer_swap).into());
     unsafe { (*msg_ref).clear() };
-
-    unsafe { (*bindgen_ref).run() };
-    let wasm_bindgen_swap = bench_env((bindgen_ref, s), |(r, i)| {
-        *i = 1;
-        for _ in 0..1000 {
-            unsafe { (**r).swap_rows() };
-        }
-    });
-    console::log_1(&format!("wasm-bindgen swap 1000: {}", wasm_bindgen_swap).into());
-    unsafe { (*bindgen_ref).clear() };
-
-    compare_benches(wasm_bindgen_swap, sledgehammer_swap);
 
     unsafe { (*msg_ref).run() };
     let sledgehammer_update = bench_env((msg_ref, s), |(r, i)| {
         *i = 1;
         unsafe { (**r).update() };
     });
-    console::log_1(&format!("sledgehammer update: {}", sledgehammer_update).into());
     unsafe { (*msg_ref).clear() };
-
-    unsafe { (*bindgen_ref).run() };
-    let wasm_bindgen_update = bench_env((bindgen_ref, s), |(r, i)| {
-        *i = 1;
-        unsafe { (**r).update() };
-    });
-    console::log_1(&format!("wasm-bindgen update: {}", wasm_bindgen_update).into());
-    unsafe { (*bindgen_ref).clear() };
-
-    compare_benches(wasm_bindgen_update, sledgehammer_update);
 
     unsafe { (*msg_ref).run() };
     let sledgehammer_select = bench_env((msg_ref, s), |(r, i)| {
@@ -132,20 +64,7 @@ fn main() {
             unsafe { (**r).select(b) };
         }
     });
-    console::log_1(&format!("sledgehammer select all twice: {}", sledgehammer_select).into());
     unsafe { (*msg_ref).clear() };
-
-    unsafe { (*bindgen_ref).run() };
-    let wasm_bindgen_select = bench_env((bindgen_ref, s), |(r, i)| {
-        *i = 1;
-        for b in (0..1000).chain(0..1000) {
-            unsafe { (**r).select(b) };
-        }
-    });
-    console::log_1(&format!("wasm-bindgen select all twice: {}", wasm_bindgen_select).into());
-    unsafe { (*bindgen_ref).clear() };
-
-    compare_benches(wasm_bindgen_select, sledgehammer_select);
 
     unsafe { (*msg_ref).run() };
     let sledgehammer_remove = bench_env((msg_ref, s), |(r, i)| {
@@ -154,8 +73,51 @@ fn main() {
             unsafe { (**r).delete(b) };
         }
     });
-    console::log_1(&format!("sledgehammer remove all: {}", sledgehammer_remove).into());
     unsafe { (*msg_ref).clear() };
+
+    let wasm_bindgen_append_1000 = bench_env((bindgen_ref, s), |(r, i)| {
+        *i = 1;
+        unsafe { (**r).run() };
+    });
+    unsafe { (*bindgen_ref).clear() };
+
+    let wasm_bindgen_append_10000 = bench_env((bindgen_ref, s), |(r, i)| {
+        *i = 1;
+        unsafe { (**r).run_lots() };
+    });
+    unsafe { (*bindgen_ref).clear() };
+
+    let wasm_bindgen_run_lots_add = bench_env((bindgen_ref, s), |(r, i)| {
+        *i = 1;
+        unsafe { (**r).run_lots() };
+        unsafe { (**r).add() };
+    });
+    unsafe { (*bindgen_ref).clear() };
+
+    unsafe { (*bindgen_ref).run() };
+    let wasm_bindgen_swap = bench_env((bindgen_ref, s), |(r, i)| {
+        *i = 1;
+        for _ in 0..1000 {
+            unsafe { (**r).swap_rows() };
+        }
+    });
+    unsafe { (*bindgen_ref).clear() };
+
+    unsafe { (*bindgen_ref).run() };
+    let wasm_bindgen_update = bench_env((bindgen_ref, s), |(r, i)| {
+        *i = 1;
+        unsafe { (**r).update() };
+    });
+    unsafe { (*bindgen_ref).clear() };
+
+    unsafe { (*bindgen_ref).run() };
+    let wasm_bindgen_select = bench_env((bindgen_ref, s), |(r, i)| {
+        *i = 1;
+        for b in (0..1000).chain(0..1000) {
+            unsafe { (**r).select(b) };
+        }
+    });
+    unsafe { (*bindgen_ref).clear() };
 
     unsafe { (*bindgen_ref).run() };
     let wasm_bindgen_remove = bench_env((bindgen_ref, s), |(r, i)| {
@@ -164,9 +126,40 @@ fn main() {
             unsafe { (**r).delete(b) };
         }
     });
-    console::log_1(&format!("wasm-bindgen remove all: {}", wasm_bindgen_remove).into());
     unsafe { (*bindgen_ref).clear() };
 
+    console::log_1(&format!("sledgehammer append 1000: {}", sledgehammer_append_1000).into());
+    console::log_1(&format!("wasm-bindgen append 1000: {}", wasm_bindgen_append_1000).into());
+    compare_benches(wasm_bindgen_append_1000, sledgehammer_append_1000);
+    console::log_1(&format!("sledgehammer append 10000: {}", sledgehammer_append_10000).into());
+    console::log_1(&format!("wasm-bindgen append 10000: {}", wasm_bindgen_append_10000).into());
+    compare_benches(wasm_bindgen_append_10000, sledgehammer_append_10000);
+    console::log_1(
+        &format!(
+            "sledgehammer run lots and add: {}",
+            sledgehammer_run_lots_add
+        )
+        .into(),
+    );
+    console::log_1(
+        &format!(
+            "wasm-bindgen run lots and add: {}",
+            wasm_bindgen_run_lots_add
+        )
+        .into(),
+    );
+    compare_benches(wasm_bindgen_run_lots_add, sledgehammer_run_lots_add);
+    console::log_1(&format!("sledgehammer swap 1000: {}", sledgehammer_swap).into());
+    console::log_1(&format!("wasm-bindgen swap 1000: {}", wasm_bindgen_swap).into());
+    compare_benches(wasm_bindgen_swap, sledgehammer_swap);
+    console::log_1(&format!("sledgehammer update: {}", sledgehammer_update).into());
+    console::log_1(&format!("wasm-bindgen update: {}", wasm_bindgen_update).into());
+    compare_benches(wasm_bindgen_update, sledgehammer_update);
+    console::log_1(&format!("sledgehammer select all twice: {}", sledgehammer_select).into());
+    console::log_1(&format!("wasm-bindgen select all twice: {}", wasm_bindgen_select).into());
+    compare_benches(wasm_bindgen_select, sledgehammer_select);
+    console::log_1(&format!("sledgehammer remove all: {}", sledgehammer_remove).into());
+    console::log_1(&format!("wasm-bindgen remove all: {}", wasm_bindgen_remove).into());
     compare_benches(wasm_bindgen_remove, sledgehammer_remove);
 }
 
