@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>sledgehammer-wasm-bindgen benchmarks</title>
+    <link href="/css/currentStyle.css" rel="stylesheet">
+    <!-- <link data-trunk rel="rust" data-wasm-opt="0" /> -->
+    <script type="module">import init from '/wasm_bindgen_sledgehammer-9466e6f62bc4258d.js';init('/wasm_bindgen_sledgehammer-9466e6f62bc4258d_bg.wasm');</script>
+
+<link rel="preload" href="/wasm_bindgen_sledgehammer-9466e6f62bc4258d_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+<link rel="modulepreload" href="/wasm_bindgen_sledgehammer-9466e6f62bc4258d.js"></head>
+
+<body>
+    <div id="main">
+        <div class="container">
+            <div class="jumbotron">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>sledgehammer-wasm-bindgen benchmarks (check console for results)</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-sm-6 smallpad">
+                                <button type="button" class="btn btn-primary btn-block" id="run">Create 1,000
+                                    rows</button>
+                            </div>
+                            <div class="col-sm-6 smallpad">
+                                <button type="button" class="btn btn-primary btn-block" id="runlots">Create 10,000
+                                    rows</button>
+                            </div>
+                            <div class="col-sm-6 smallpad">
+                                <button type="button" class="btn btn-primary btn-block" id="add">Append 1,000
+                                    rows</button>
+                            </div>
+                            <div class="col-sm-6 smallpad">
+                                <button type="button" class="btn btn-primary btn-block" id="update">Update every 10th
+                                    row</button>
+                            </div>
+                            <div class="col-sm-6 smallpad">
+                                <button type="button" class="btn btn-primary btn-block" id="clear">Clear</button>
+                            </div>
+                            <div class="col-sm-6 smallpad">
+                                <button type="button" class="btn btn-primary btn-block" id="swaprows">Swap Rows</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover table-striped test-data">
+                <tbody id="tbody"></tbody>
+            </table>
+            <span class="preloadicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </div>
+    </div>
+
+
+<script>(function () {
+    var protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var url = protocol + '//' + window.location.host + '/_trunk/ws';
+    var poll_interval = 5000;
+    var reload_upon_connect = () => {
+        window.setTimeout(
+            () => {
+                // when we successfully reconnect, we'll force a
+                // reload (since we presumably lost connection to
+                // trunk due to it being killed, so it will have
+                // rebuilt on restart)
+                var ws = new WebSocket(url);
+                ws.onopen = () => window.location.reload();
+                ws.onclose = reload_upon_connect;
+            },
+            poll_interval);
+    };
+
+    var ws = new WebSocket(url);
+    ws.onmessage = (ev) => {
+        const msg = JSON.parse(ev.data);
+        if (msg.reload) {
+            window.location.reload();
+        }
+    };
+    ws.onclose = reload_upon_connect;
+})()
+</script></body></html>
