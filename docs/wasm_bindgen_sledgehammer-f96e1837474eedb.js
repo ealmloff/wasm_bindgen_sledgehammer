@@ -396,7 +396,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('wasm_bindgen_sledgehammer-d9fb7365a19cc4fd_bg.wasm', import.meta.url);
+        input = new URL('wasm_bindgen_sledgehammer-f96e1837474eedb_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 

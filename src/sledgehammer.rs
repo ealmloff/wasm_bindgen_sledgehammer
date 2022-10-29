@@ -54,6 +54,7 @@ fn random(max: usize) -> usize {
 struct Row {
     id: usize,
     label: String,
+    excited: u8,
     ptr: u32,
 }
 
@@ -87,14 +88,16 @@ impl Main {
         self.append_rows(1000)
     }
 
+    #[inline(never)]
     pub fn update(&mut self) {
         let mut i = 0;
         let l = self.data.len();
         while i < l {
             let row = &mut self.data[i];
-            row.label.push_str(" !!!");
+            // row.label.push_str(" !!!");
+            row.excited = 1;
             self.msg.set_text(
-                format_args!("{}", row.label),
+                format_args!("{}{}", row.label, " !!!".repeat(row.excited as usize)),
                 MaybeId::Node(row.label_node()),
             );
             i += 10;
@@ -158,9 +161,9 @@ impl Main {
         let row999 = &self.data[999];
 
         self.msg
-            .insert_before(MaybeId::Node(row2.el()), vec![row998.el()]);
+            .insert_before(MaybeId::Node(row2.el()), row998.el());
         self.msg
-            .insert_before(MaybeId::Node(row999.el()), vec![row1.el()]);
+            .insert_before(MaybeId::Node(row999.el()), row1.el());
 
         self.msg.flush();
         self.data.swap(1, 998);
@@ -198,8 +201,7 @@ impl Main {
                 .clone_node(MaybeId::Node(ROW_ID), MaybeId::Node(el_id));
             self.msg
                 .set_attribute("data-id", format_args!("{}", id_str), MaybeId::LastNode);
-            self.msg
-                .append_children(MaybeId::Node(TBODY_ID), vec![el_id]);
+            self.msg.append_child(MaybeId::Node(TBODY_ID), el_id);
             self.msg.first_child();
             self.msg
                 .set_text(format_args!("{}", id_str), MaybeId::LastNode);
@@ -209,7 +211,12 @@ impl Main {
             self.msg
                 .set_text(format_args!("{}", label.as_str()), MaybeId::LastNode);
 
-            let row = Row { id, label, ptr: el };
+            let row = Row {
+                id,
+                label,
+                ptr: el,
+                excited: 0,
+            };
 
             self.data.push(row);
         }

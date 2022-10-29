@@ -77,13 +77,16 @@ impl Main {
         self.append_rows(1000);
     }
 
+    #[inline(never)]
     pub fn update(&mut self) {
         let mut i = 0;
         let l = self.data.len();
         while i < l {
             let row = &mut self.data[i];
             row.label.push_str(" !!!");
+            // row.label_node.set_text_content(Some(row.label.as_str()));
             row.label_node.set_text_content(Some(row.label.as_str()));
+            row.label.remove(4);
             i += 10;
         }
     }
@@ -134,8 +137,8 @@ impl Main {
         let b = a.next_sibling().unwrap();
         let c = &row998.el;
         let d = c.next_sibling().unwrap();
-        self.tbody.insert_before(&c, Some(&b)).unwrap();
-        self.tbody.insert_before(&a, Some(&d)).unwrap();
+        self.tbody.insert_before(c, Some(&b)).unwrap();
+        self.tbody.insert_before(a, Some(&d)).unwrap();
         self.data.swap(1, 998);
     }
 
