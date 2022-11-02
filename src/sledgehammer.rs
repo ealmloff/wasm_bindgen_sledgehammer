@@ -1,3 +1,5 @@
+use core::panic;
+
 use js_sys::Math;
 use sledgehammer::builder::MaybeId;
 use sledgehammer::element::Element;
@@ -72,7 +74,6 @@ impl Row {
 
 pub struct Main {
     data: Vec<Row>,
-    last_id: usize,
     rows: usize,
     selected: Option<NodeId>,
     msg: MsgChannel,
@@ -94,8 +95,7 @@ impl Main {
         let l = self.data.len();
         while i < l {
             let row = &mut self.data[i];
-            // row.label.push_str(" !!!");
-            row.excited = 1;
+            row.excited += 1;
             self.msg.set_text(
                 format_args!("{}{}", row.label, " !!!".repeat(row.excited as usize)),
                 MaybeId::Node(row.label_node()),
@@ -126,12 +126,13 @@ impl Main {
                 return;
             }
         }
+        panic!("Row not found");
     }
 
     pub fn delete(&mut self, id: usize) {
         let row = match self.data.iter().position(|row| row.id == id) {
             Some(i) => self.data.remove(i),
-            None => return,
+            None => panic!("Row not found"),
         };
         self.msg.remove(MaybeId::Node(row.el()));
         self.msg.flush();
@@ -179,7 +180,7 @@ impl Main {
             // for y in 0..BATCH_SIZE {
             // let i = self.rows + y + x * BATCH_SIZE;
             let i = self.rows + x;
-            let id = self.last_id + i + 1;
+            let id = i + 1;
 
             let adjective = ADJECTIVES[random(ADJECTIVES_LEN)];
             let colour = COLOURS[random(COLOURS_LEN)];
@@ -222,7 +223,6 @@ impl Main {
         }
         self.msg.flush();
         // }
-        self.last_id += count;
         self.rows += count;
     }
 }
@@ -312,7 +312,6 @@ pub fn init() -> Main {
 
     Main {
         data: Vec::new(),
-        last_id: 0,
         rows: 0,
         selected: None,
         msg,

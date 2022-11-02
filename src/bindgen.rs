@@ -1,3 +1,5 @@
+use core::panic;
+
 use js_sys::Math;
 use wasm_bindgen::JsCast;
 use web_sys::{Element, Node};
@@ -63,7 +65,6 @@ pub struct Main {
     data: Vec<Row>,
     row_template: Node,
     tbody: Node,
-    last_id: usize,
     selected: Option<Element>,
 }
 
@@ -86,7 +87,6 @@ impl Main {
             row.label.push_str(" !!!");
             // row.label_node.set_text_content(Some(row.label.as_str()));
             row.label_node.set_text_content(Some(row.label.as_str()));
-            row.label.remove(4);
             i += 10;
         }
     }
@@ -106,12 +106,13 @@ impl Main {
                 return;
             }
         }
+        panic!("Row not found");
     }
 
     pub fn delete(&mut self, id: usize) {
         let row = match self.data.iter().position(|row| row.id == id) {
             Some(i) => self.data.remove(i),
-            None => return,
+            None => panic!("Row not found"),
         };
         row.el.remove();
     }
@@ -145,7 +146,7 @@ impl Main {
     pub fn append_rows(&mut self, count: usize) {
         self.data.reserve(count);
         for i in 0..count {
-            let id = self.last_id + i + 1;
+            let id = i + 1;
 
             let adjective = ADJECTIVES[random(ADJECTIVES_LEN_F64)];
             let colour = COLOURS[random(COLOURS_LEN_F64)];
@@ -178,7 +179,6 @@ impl Main {
             self.tbody.append_child(&row.el).unwrap();
             self.data.push(row);
         }
-        self.last_id += count;
     }
 }
 
@@ -195,7 +195,6 @@ pub fn init() -> Main {
         data: Vec::new(),
         row_template: row_template.into(),
         tbody: tbody.into(),
-        last_id: 0,
         selected: None,
     }
 }
