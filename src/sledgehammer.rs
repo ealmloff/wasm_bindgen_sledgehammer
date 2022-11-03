@@ -4,7 +4,6 @@ use js_sys::Math;
 use sledgehammer::builder::MaybeId;
 use sledgehammer::element::Element;
 use sledgehammer::*;
-use ufmt::uwrite;
 
 const ADJECTIVES_LEN: usize = 25;
 const ADJECTIVES: [&str; ADJECTIVES_LEN] = [
@@ -300,7 +299,7 @@ pub fn init() -> Main {
     );
 
     let tbody = document.get_element_by_id("tbody").expect("tbody");
-    let mut msg = MsgChannel::new(tbody.clone());
+    let mut msg = MsgChannel::default();
     msg.build_full_element(EL);
     msg.set_node(TBODY_ID, tbody.into());
     msg.flush();

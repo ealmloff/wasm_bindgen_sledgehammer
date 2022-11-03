@@ -275,12 +275,8 @@ function getImports() {
         const ret = getObject(arg0).getElementById(getStringFromWasm0(arg1, arg2));
         return isLikeNone(ret) ? 0 : addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
-        const ret = getObject(arg0);
-        return addHeapObject(ret);
-    };
-    imports.wbg.__wbg_new_93ce11d6842c9e52 = function(arg0, arg1, arg2, arg3, arg4, arg5) {
-        const ret = new JsInterpreter(takeObject(arg0), takeObject(arg1), arg2 >>> 0, arg3 >>> 0, arg4 >>> 0, arg5 >>> 0);
+    imports.wbg.__wbg_new_93ce11d6842c9e52 = function(arg0, arg1, arg2, arg3, arg4) {
+        const ret = new JsInterpreter(takeObject(arg0), arg1 >>> 0, arg2 >>> 0, arg3 >>> 0, arg4 >>> 0);
         return addHeapObject(ret);
     };
     imports.wbg.__wbg_SetNode_254896a705bd5d85 = function(arg0, arg1, arg2) {
@@ -329,6 +325,10 @@ function getImports() {
         const ret = getObject(arg0).insertBefore(getObject(arg1), getObject(arg2));
         return addHeapObject(ret);
     }, arguments) };
+    imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
+        const ret = getObject(arg0);
+        return addHeapObject(ret);
+    };
     imports.wbg.__wbg_remove_a8fdc690909ea566 = function(arg0) {
         getObject(arg0).remove();
     };
@@ -425,7 +425,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-        input = new URL('wasm_bindgen_sledgehammer-9c23a5ea2b26e98b_bg.wasm', import.meta.url);
+        input = new URL('wasm_bindgen_sledgehammer-fd7930b0b1d57fd0_bg.wasm', import.meta.url);
     }
     const imports = getImports();
 
