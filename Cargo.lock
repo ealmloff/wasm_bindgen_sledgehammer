@@ -58,7 +58,9 @@ dependencies = [
 
 [[package]]
 name = "sledgehammer"
-version = "0.0.1"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b847034ec9ccdc9793c1942832d32397b6d9a7395298b8d9291efbea30377635"
 dependencies = [
  "js-sys",
  "ufmt",

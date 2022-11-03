@@ -427,7 +427,7 @@ fn compare_benches(wb: f64, name: &'static str, sl: f64, alt: &'static str) {
 
 fn bench(perf: &Performance, mut setup: impl FnMut(), mut f: impl FnMut()) -> f64 {
     let mut sum = 0.0;
-    const N: usize = 200;
+    const N: usize = 100;
     for _ in 0..N {
         setup();
         let start = perf.now();
