@@ -4,6 +4,7 @@ use js_sys::Math;
 use sledgehammer::builder::MaybeId;
 use sledgehammer::element::Element;
 use sledgehammer::*;
+use ufmt::uwrite;
 
 const ADJECTIVES_LEN: usize = 25;
 const ADJECTIVES: [&str; ADJECTIVES_LEN] = [
@@ -97,7 +98,12 @@ impl Main {
             let row = &mut self.data[i];
             row.excited += 1;
             self.msg.set_text(
-                format_args!("{}{}", row.label, " !!!".repeat(row.excited as usize)),
+                |mut v: WritableVecWrapper| {
+                    let str1 = row.label.as_str();
+                    let string = " !!!".repeat(row.excited as usize);
+                    let str2 = string.as_str();
+                    let _ = uwrite!(v, "{}{}", str1, str2);
+                },
                 MaybeId::Node(row.label_node()),
             );
             i += 10;
@@ -116,11 +122,8 @@ impl Main {
         self.unselect();
         for row in &self.data {
             if row.id == id {
-                self.msg.set_attribute(
-                    Attribute::class,
-                    format_args!("danger"),
-                    MaybeId::Node(row.el()),
-                );
+                self.msg
+                    .set_attribute(Attribute::class, "danger", MaybeId::Node(row.el()));
                 self.selected = Some(row.el());
                 self.msg.flush();
                 return;
@@ -140,8 +143,8 @@ impl Main {
     }
 
     pub fn clear(&mut self) {
-        self.data = Vec::new();
-        self.msg.set_text(format_args!(""), MaybeId::Node(TBODY_ID));
+        self.data.clear();
+        self.msg.set_text("", MaybeId::Node(TBODY_ID));
         self.unselect();
         self.msg.flush();
         self.rows = 0;
@@ -196,21 +199,16 @@ impl Main {
             let el = i as u32 * 2 + 1 + TEMP_ID.0;
             let el_id = NodeId(el);
             let label_node = NodeId(el + 1);
-            let id_string = id.to_string();
-            let id_str = id_string.as_str();
             self.msg
                 .clone_node(MaybeId::Node(ROW_ID), MaybeId::Node(el_id));
-            self.msg
-                .set_attribute("data-id", format_args!("{}", id_str), MaybeId::LastNode);
+            self.msg.set_attribute("data-id", id, MaybeId::LastNode);
             self.msg.append_child(MaybeId::Node(TBODY_ID), el_id);
             self.msg.first_child();
-            self.msg
-                .set_text(format_args!("{}", id_str), MaybeId::LastNode);
+            self.msg.set_text(id, MaybeId::LastNode);
             self.msg.next_sibling();
             self.msg.first_child();
             self.msg.store_with_id(label_node);
-            self.msg
-                .set_text(format_args!("{}", label.as_str()), MaybeId::LastNode);
+            self.msg.set_text(label.as_str(), MaybeId::LastNode);
 
             let row = Row {
                 id,
@@ -235,24 +233,24 @@ pub fn init() -> Main {
         Element,
         (),
         (
-            ElementBuilder<Element, ((Attribute, &&str),), ()>,
+            ElementBuilder<Element, ((Attribute, &str),), ()>,
             ElementBuilder<
                 Element,
-                ((Attribute, &&str),),
-                (ElementBuilder<Element, ((Attribute, &&str),), ()>,),
+                ((Attribute, &str),),
+                (ElementBuilder<Element, ((Attribute, &str),), ()>,),
             >,
             ElementBuilder<
                 Element,
-                ((Attribute, &&str),),
+                ((Attribute, &str),),
                 (
                     ElementBuilder<
                         Element,
-                        ((Attribute, &&str),),
-                        (ElementBuilder<Element, ((Attribute, &&str), (Attribute, &&str)), ()>,),
+                        ((Attribute, &str),),
+                        (ElementBuilder<Element, ((Attribute, &str), (Attribute, &str)), ()>,),
                     >,
                 ),
             >,
-            ElementBuilder<Element, ((Attribute, &&str),), ()>,
+            ElementBuilder<Element, ((Attribute, &str),), ()>,
         ),
     > = ElementBuilder::new(
         MaybeId::Node(ROW_ID),
@@ -262,34 +260,34 @@ pub fn init() -> Main {
             ElementBuilder::new(
                 MaybeId::LastNode,
                 Element::td,
-                ((Attribute::class, &"col-md-1"),),
+                ((Attribute::class, "col-md-1"),),
                 (),
             ),
             ElementBuilder::new(
                 MaybeId::LastNode,
                 Element::td,
-                ((Attribute::class, &"col-md-4"),),
+                ((Attribute::class, "col-md-4"),),
                 (ElementBuilder::new(
                     MaybeId::LastNode,
                     Element::a,
-                    ((Attribute::class, &"lbl"),),
+                    ((Attribute::class, "lbl"),),
                     (),
                 ),),
             ),
             ElementBuilder::new(
                 MaybeId::LastNode,
                 Element::td,
-                ((Attribute::class, &"col-md-1"),),
+                ((Attribute::class, "col-md-1"),),
                 (ElementBuilder::new(
                     MaybeId::LastNode,
                     Element::a,
-                    ((Attribute::class, &"remove"),),
+                    ((Attribute::class, "remove"),),
                     (ElementBuilder::new(
                         MaybeId::LastNode,
                         Element::span,
                         (
-                            (Attribute::class, &"remove glyphicon glyphicon-remove"),
-                            (Attribute::aria_hidden, &"true"),
+                            (Attribute::class, "remove glyphicon glyphicon-remove"),
+                            (Attribute::aria_hidden, "true"),
                         ),
                         (),
                     ),),
@@ -298,7 +296,7 @@ pub fn init() -> Main {
             ElementBuilder::new(
                 MaybeId::LastNode,
                 Element::td,
-                ((Attribute::class, &"col-md-6"),),
+                ((Attribute::class, "col-md-6"),),
                 (),
             ),
         ),
