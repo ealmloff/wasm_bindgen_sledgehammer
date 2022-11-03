@@ -97,15 +97,12 @@ impl Main {
         while i < l {
             let row = &mut self.data[i];
             row.excited += 1;
-            self.msg.set_text(
-                |mut v: WritableVecWrapper| {
-                    let str1 = row.label.as_str();
-                    let string = " !!!".repeat(row.excited as usize);
-                    let str2 = string.as_str();
-                    let _ = uwrite!(v, "{}{}", str1, str2);
-                },
-                MaybeId::Node(row.label_node()),
-            );
+            let mut label = row.label.to_string();
+            for _ in 0..row.excited {
+                label += " !!!";
+            }
+            self.msg
+                .set_text(label.as_str(), MaybeId::Node(row.label_node()));
             i += 10;
         }
         self.msg.flush();
