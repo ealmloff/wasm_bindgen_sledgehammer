@@ -400,6 +400,35 @@ fn main() {
         wasm_bindgen_remove,
         "vanillajs",
     );
+
+    // geometic mean
+    let sledgehammer_mean = (sledgehammer_append_1000
+        * sledgehammer_append_10000
+        * sledgehammer_add
+        * sledgehammer_swap
+        * sledgehammer_update
+        * sledgehammer_select
+        * sledgehammer_remove)
+        .powf(1.0 / 7.0);
+    let wasm_bindgen_mean = (wasm_bindgen_append_1000
+        * wasm_bindgen_append_10000
+        * wasm_bindgen_add
+        * wasm_bindgen_swap
+        * wasm_bindgen_update
+        * wasm_bindgen_select
+        * wasm_bindgen_remove)
+        .powf(1.0 / 7.0);
+    let vanilla_mean = (vanilla_append_1000
+        * vanilla_append_10000
+        * vanilla_add
+        * vanilla_swap
+        * vanilla_update
+        * vanilla_select
+        * vanilla_remove)
+        .powf(1.0 / 7.0);
+    console::log_1(&format!("sledgehammer geometric mean: {}", sledgehammer_mean).into());
+    console::log_1(&format!("wasm-bindgen geometric mean: {}", wasm_bindgen_mean).into());
+    console::log_1(&format!("vanillajs geometric mean: {}", vanilla_mean).into());
 }
 
 fn compare_benches(wb: f64, name: &'static str, sl: f64, alt: &'static str) {

@@ -15,6 +15,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "dlv-list"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd1e4a14ee49d368aa9378b0d570c639179489b6b1f89ea558bce6a15ca5b96a"
+
+[[package]]
+name = "index_list"
+version = "0.2.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a9d968042a4902e08810946fc7cd5851eb75e80301342305af755ca06cb82ce"
+
+[[package]]
 name = "js-sys"
 version = "0.3.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -58,12 +70,9 @@ dependencies = [
 
 [[package]]
 name = "sledgehammer"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b847034ec9ccdc9793c1942832d32397b6d9a7395298b8d9291efbea30377635"
+version = "0.2.0"
 dependencies = [
  "js-sys",
- "ufmt",
  "wasm-bindgen",
  "web-sys",
 ]
@@ -78,33 +87,6 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
-
-[[package]]
-name = "ufmt"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a64846ec02b57e9108d6469d98d1648782ad6bb150a95a9baac26900bbeab9d"
-dependencies = [
- "ufmt-macros",
- "ufmt-write",
-]
-
-[[package]]
-name = "ufmt-macros"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d337d3be617449165cb4633c8dece429afd83f84051024079f97ad32a9663716"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "ufmt-write"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e87a2ed6b42ec5e28cc3b94c09982969e9227600b2e3dcbc1db927a84c06bd69"
 
 [[package]]
 name = "unicode-ident"
@@ -170,9 +152,10 @@ checksum = "1c38c045535d93ec4f0b4defec448e4291638ee608530863b1e2ba115d4fff7f"
 name = "wasm_bindgen_sledgehammer"
 version = "0.1.0"
 dependencies = [
+ "dlv-list",
+ "index_list",
  "js-sys",
  "sledgehammer",
- "ufmt",
  "wasm-bindgen",
  "web-sys",
 ]

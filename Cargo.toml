@@ -6,11 +6,14 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sledgehammer = "0.1.0"
+# sledgehammer = "0.1.0"
+# sledgehammer = { git = "https://github.com/demonthos/sledgehammer" }
+sledgehammer = { path = "D:/users/desktop/github/fast_dom" }
 wasm-bindgen = "0.2.83"
 web-sys = { version = "0.3.60", features = ["console", "Window", "Document", "Element", "HtmlElement", "HtmlHeadElement", "Performance"] }
 js-sys = "0.3.60"
-ufmt = "0.2.0"
+dlv-list = "0.4.0"
+index_list = "0.2.7"
 
 [profile.release]
 debug = true
